@@ -14,35 +14,9 @@ local L_30_ = L_29_:CreateWatermark("kyanite | {game} | {fps}")
 local L_31_ = L_29_:CreateWindow("kyanite | Hood Customs", Vector2.new(492, 598), Enum.KeyCode.RightShift)
 local L_32_ = L_31_:CreateTab("Main")
 -- sections
-local L_35_ = L_32_:CreateSector("Silent Aim")
-local L_36_ = L_32_:CreateSector("FOV", "Right")
 local L_37_ = L_32_:CreateSector("Smooth Aim")
 local L_38_ = L_32_:CreateSector("ESP", "Right")
 -- buttons, sliders, toggles ,dropdowns colorpickers
-local L_50_ = L_35_:AddToggle("Enable", false, function(enable)
-    DaHoodSettings.SilentAim = enable
-end)
-local L_50_ = L_35_:AddToggle("Show FOV", false, function(poop)
-    Aiming.ShowFOV = poop
-end)
-local L_54_ = L_35_:AddSlider("Hit Chance", 0, 10, 100, 30, function(boob)
-    Aiming.HitChance = boob
-end)
-local L_49_ = L_35_:AddDropdown("Hitboxes",  {
-	"Head",
-	"UpperTorso",
-	"HumanoidRootPart",
-	"LowerTorso",
-	"RightFoot"
-}, "HumanoidRootPart", function(boobies)
-Aiming.TargetPart = boobies
-end)
-L_36_:AddSlider("FOV Size", 1, 1, 350, 100, function(size)
-    Aiming.FOV = size
-end)
-L_36_:AddSlider("FOV Sides", 1, 1, 350, 100, function(sides)
-    Aiming.FOVSides = sides
-end)
 local L_50_ = L_37_:AddToggle("Enable", false, function(enab)
     getgenv().Smoothness = enab
 end)
