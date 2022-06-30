@@ -1,0 +1,83 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/fatality.cc/main/silentaim1", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/kyanitecc/main/smooth"))()
+----------
+getgenv().AimlockKey = "c"
+getgenv().ThirdPerson = true 
+getgenv().FirstPerson = true
+getgenv().TeamCheck = false
+getgenv().PredictMovement = true
+getgenv().CheckIfJumped = true
+----------
+local L_29_ = loadstring(game:HttpGet("https://raw.githubusercontent.com/tayodevelup/secretinsomniac/main/12315", true))()
+local L_30_ = L_29_:CreateWatermark("kyanite | {game} | {fps}")
+-- tabs
+local L_31_ = L_29_:CreateWindow("kyanite | Hood Customs", Vector2.new(492, 598), Enum.KeyCode.RightShift)
+local L_32_ = L_31_:CreateTab("Main")
+-- sections
+local L_35_ = L_32_:CreateSector("Silent Aim")
+local L_36_ = L_32_:CreateSector("FOV", "Right")
+local L_37_ = L_32_:CreateSector("Smooth Aim")
+local L_38_ = L_32_:CreateSector("ESP", "Right")
+-- buttons, sliders, toggles ,dropdowns colorpickers
+local L_50_ = L_35_:AddToggle("Enable", false, function(enable)
+    DaHoodSettings.SilentAim = enable
+end)
+local L_50_ = L_35_:AddToggle("Show FOV", false, function(poop)
+    Aiming.ShowFOV = poop
+end)
+local L_54_ = L_35_:AddSlider("Hit Chance", 0, 10, 100, 30, function(boob)
+    Aiming.HitChance = boob
+end)
+local L_49_ = L_35_:AddDropdown("Hitboxes",  {
+	"Head",
+	"UpperTorso",
+	"HumanoidRootPart",
+	"LowerTorso",
+	"RightFoot"
+}, "HumanoidRootPart", function(boobies)
+Aiming.TargetPart = boobies
+end)
+L_36_:AddSlider("FOV Size", 1, 1, 350, 100, function(size)
+    Aiming.FOV = size
+end)
+L_36_:AddSlider("FOV Sides", 1, 1, 350, 100, function(sides)
+    Aiming.FOVSides = sides
+end)
+local L_50_ = L_37_:AddToggle("Enable", false, function(enab)
+    getgenv().Smoothness = enab
+end)
+L_37_:AddSlider("Smoothness", 0.1, 4, 0.3, 30, function(smooth)
+    getgenv().SmoothnessAmount = smooth
+end)
+L_37_:AddSlider("Prediction", 1, 4, 10, 10, function(pred)
+    getgenv().PredictionVelocity = pred
+end)
+L_37_:AddSlider("Radius", 1, 4, 500, 500, function(radius)
+    getgenv().AimRadius = radius
+end)
+local L_49_ = L_37_:AddDropdown("Target Part",  {
+	"Head",
+	"UpperTorso",
+	"HumanoidRootPart",
+	"LowerTorso",
+	"RightFoot"
+}, "HumanoidRootPart", function(boobies2)
+getgenv().OldAimPart = boobies2
+getgenv().AimPart = boobies2
+end)
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/kyanitecc/main/esp"))()
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/U2HwmEyF"))()
+
+local L_50_ = L_38_:AddToggle("Boxes", false, function(a)
+    getgenv().PikaESPSettings.Box = a
+end)
+local L_50_ = L_38_:AddToggle("Names", false, function(b)
+    getgenv().PikaESPSettings.Name = b
+end)
+local L_50_ = L_38_:AddToggle("Tracers", false, function(c)
+    getgenv().PikaESPSettings.Tracers = c
+end)
+local L_50_ = L_38_:AddToggle("Unlock Tracers", false, function()
+    getgenv().PikaESPSettings.UnlockTracers = d
+end)
