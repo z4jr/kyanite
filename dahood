@@ -1,0 +1,377 @@
+
+
+local LocalPlayer = game.Players.LocalPlayer
+
+local Mouse = LocalPlayer:GetMouse()
+
+local RunService = game:GetService("RunService")
+
+local workspace = game:GetService("Workspace")
+
+local Light = game:GetService("Lighting")
+
+local camera = workspace.CurrentCamera
+
+local worldToViewportPoint = camera.worldToViewportPoint
+
+local function fail(r) return LocalPlayer:Kick(r) end
+
+local usedCache = shared.__urlcache and next(shared.__urlcache) ~= nil
+
+shared.__urlcache = shared.__urlcache or {}
+local function httpload(url)
+    local success, result
+
+    if shared.__urlcache[url] then
+        success, result = true, shared.__urlcache[url]
+    else
+        success, result = pcall(game.HttpGet, game, url)
+    end
+
+    if (not success) then
+        return fail(string.format('Failed to GET url %q for reason: %q', url, tostring(result)))
+    end
+
+    local fn, err = loadstring(result)
+    if (type(fn) ~= 'function') then
+        return fail(string.format('Failed to loadstring url %q for reason: %q', url, tostring(err)))
+    end
+
+    local results = { pcall(fn) }
+    if (not results[1]) then
+        return fail(string.format('Failed to initialize url %q for reason: %q', url, tostring(results[2])))
+    end
+
+    shared.__urlcache[url] = result
+    return unpack(results, 2)
+end
+
+local prefix = "kyanite: "
+
+local function log(text)
+    print(prefix..text)
+end
+
+local function warn(text)
+    warn(prefix..text)
+end
+
+-- Anti Cheat Bypass
+
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local MainEvent = ReplicatedStorage.MainEvent
+
+local HB = RunService.Heartbeat
+
+do 
+   local oldFunc = nil
+
+  oldFunc = hookfunction(MainEvent.FireServer, newcclosure(function(Event, ...)
+     local args = {...}
+
+     if args[1] == "CHECKER_1" or args[1] == "TeleportDetect" or args[1] == "OneMoreTime" then
+        return nil
+     end
+
+     return oldFunc(Event, ...)
+  end))
+
+   HB:Connect(function()
+       local root = LocalPlayer.Character and LocalPlayer.Character.PrimaryPart
+
+       if root then
+           for i,v in pairs(getconnections(root:GetPropertyChangedSignal("CFrame"))) do
+               v:Disable()
+           end
+       end
+   end)
+
+  local function added(char)
+     while true do
+           if not char then return end
+        HB:Wait()
+        for i,v in pairs(char:GetChildren()) do
+           if v:IsA("Script") and v:FindFirstChildOfClass("LocalScript") then
+              v:FindFirstChildOfClass("LocalScript").Source = "Cleared by kyanite"
+              return
+           end
+        end
+     end
+  end
+
+  if LocalPlayer.Character then
+     added(LocalPlayer.Character)
+  end
+
+  LocalPlayer.CharacterAdded:Connect(added)
+
+end
+----------
+loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/fatality.cc/main/silentaim1", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/kyanitecc/main/smooth"))()
+----------
+getgenv().AimlockKey = "c"
+getgenv().ThirdPerson = true 
+getgenv().FirstPerson = true
+getgenv().TeamCheck = false
+getgenv().PredictMovement = true
+getgenv().CheckIfJumped = true
+----------
+local L_29_ = loadstring(game:HttpGet("https://raw.githubusercontent.com/tayodevelup/secretinsomniac/main/12315", true))()
+local L_30_ = L_29_:CreateWatermark("kyanite | {game} | {fps}")
+-- tabs
+local L_31_ = L_29_:CreateWindow("kyanite | Da Hood", Vector2.new(492, 598), Enum.KeyCode.RightShift)
+local L_32_ = L_31_:CreateTab("Main")
+-- sections
+local L_35_ = L_32_:CreateSector("Silent Aim")
+local L_36_ = L_32_:CreateSector("FOV", "Right")
+local L_37_ = L_32_:CreateSector("Smooth Aim")
+local L_38_ = L_32_:CreateSector("ESP", "Right")
+local L_39_ = L_32_:CreateSector("Crosshair", "Right")
+local L_41_ = L_32_:CreateSector("God", "Right")
+-- buttons, sliders, toggles ,dropdowns colorpickers
+local L_50_ = L_35_:AddToggle("Enable", false, function(enable)
+    DaHoodSettings.SilentAim = enable
+end)
+local L_50_ = L_35_:AddToggle("Show FOV", false, function(poop)
+    Aiming.ShowFOV = poop
+end)
+local L_54_ = L_35_:AddSlider("Hit Chance", 0, 10, 100, 30, function(boob)
+    Aiming.HitChance = boob
+end)
+local L_49_ = L_35_:AddDropdown("Hitboxes",  {
+	"Head",
+	"UpperTorso",
+	"HumanoidRootPart",
+	"LowerTorso",
+	"RightFoot"
+}, "HumanoidRootPart", function(boobies)
+Aiming.TargetPart = boobies
+end)
+L_36_:AddSlider("FOV Size", 1, 1, 350, 100, function(size)
+    Aiming.FOV = size
+end)
+L_36_:AddSlider("FOV Sides", 1, 1, 350, 100, function(sides)
+    Aiming.FOVSides = sides
+end)
+local L_50_ = L_37_:AddToggle("Enable", false, function(enab)
+    getgenv().Smoothness = enab
+end)
+L_37_:AddSlider("Smoothness", 0.1, 4, 0.3, 30, function(smooth)
+    getgenv().SmoothnessAmount = smooth
+end)
+L_37_:AddSlider("Prediction", 1, 4, 10, 10, function(pred)
+    getgenv().PredictionVelocity = pred
+end)
+L_37_:AddSlider("Radius", 1, 4, 500, 500, function(radius)
+    getgenv().AimRadius = radius
+end)
+local L_49_ = L_37_:AddDropdown("Target Part",  {
+	"Head",
+	"UpperTorso",
+	"HumanoidRootPart",
+	"LowerTorso",
+	"RightFoot"
+}, "HumanoidRootPart", function(boobies2)
+getgenv().OldAimPart = boobies2
+getgenv().AimPart = boobies2
+end)
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/z4jr/kyanitecc/main/esp"))()
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/U2HwmEyF"))()
+
+local L_50_ = L_38_:AddToggle("Boxes", false, function(a)
+    getgenv().PikaESPSettings.Box = a
+end)
+local L_50_ = L_38_:AddToggle("Names", false, function(b)
+    getgenv().PikaESPSettings.Name = b
+end)
+local L_50_ = L_38_:AddToggle("Tracers", false, function(c)
+    getgenv().PikaESPSettings.Tracers = c
+end)
+local L_50_ = L_38_:AddToggle("Unlock Tracers", false, function()
+    getgenv().PikaESPSettings.UnlockTracers = d
+end)
+local L_50_ = L_39_:AddToggle("Top", true, function(L_179_arg0)
+game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.Visible = L_179_arg0
+end)
+local L_50_ = L_39_:AddToggle("Bottom", true, function(L_179_arg0)
+game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.Visible = L_179_arg0
+end)
+local L_50_ = L_39_:AddToggle("Right", true, function(L_179_arg0)
+game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.Visible = L_179_arg0
+end)
+local L_50_ = L_39_:AddToggle("Left", true, function(L_179_arg0)
+game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.Visible = L_179_arg0
+end)
+L_41_:AddButton("God Mode (Guns)", function()
+local localPlayer = game:GetService('Players').LocalPlayer;
+local localCharacter = localPlayer.Character;
+localCharacter:FindFirstChildOfClass('Humanoid').Health = 0;
+local newCharacter = localPlayer.CharacterAdded:Wait();
+local spoofFolder = Instance.new('Folder');
+spoofFolder.Name = 'FULLY_LOADED_CHAR';
+spoofFolder.Parent = newCharacter;
+newCharacter:WaitForChild('RagdollConstraints'):Destroy();
+local spoofValue = Instance.new('BoolValue', newCharacter);
+spoofValue.Name = 'RagdollConstraints';
+local name = game.Players.LocalPlayer.Name
+local lol =    game.Workspace:WaitForChild(name)
+local money = Instance.new("Folder",game.Players.LocalPlayer.Character);money.Name = "FULLY_LOADED_CHAR"
+lol.Parent = game.Workspace.Players
+game.Players.LocalPlayer.Character:WaitForChild("BodyEffects")
+game.Players.LocalPlayer.Character.BodyEffects.BreakingParts:Destroy()
+end)
+L_41_:AddButton("God Mode (Melees)", function()
+local localPlayer = game:GetService('Players').LocalPlayer;
+local localCharacter = localPlayer.Character;
+localCharacter:FindFirstChildOfClass('Humanoid').Health = 0;
+local newCharacter = localPlayer.CharacterAdded:Wait();
+local spoofFolder = Instance.new('Folder');
+spoofFolder.Name = 'FULLY_LOADED_CHAR';
+spoofFolder.Parent = newCharacter;
+newCharacter:WaitForChild('BodyEffects').Dead:Destroy();
+local spoofValue = Instance.new('BoolValue', newCharacter.BodyEffects);
+spoofValue.Name = 'Dead';
+wait()
+--godblock/godbullet
+local ps = game:GetService("Players")
+local lp = ps.LocalPlayer
+local char = lp.Character
+
+char.BodyEffects.Armor:Destroy()
+char.BodyEffects.Defense:Destroy()
+
+local Clone1 = Instance.new("IntValue")
+Clone1.Name = "Armor"
+Clone1.Parent = char.BodyEffects
+
+local Clone2 = Instance.new("NumberValue")
+Clone2.Name = "Defense"
+Clone2.Parent = char.BodyEffects
+wait()
+--walspeed
+local d = {}
+local e = {}
+local g = {}
+local h = {}
+local j = {}
+local k = {}
+local function l()
+    local m = 3
+    local n = checkcaller
+    local o = getrawmetatable(game)
+    setreadonly(o, false)
+    local p = o.__index
+    local q = o.__newindex
+    local r = o.__namecall
+    o.__index =
+        newcclosure(
+            function(s, t)
+                if n() then
+                return p(s, t)
+            end
+                if d[s] and d[s][t] then
+                local u = d[s][t]
+                if u["IsCallback"] == true then
+                    return u["Value"](s)
+                else
+                    return u["Value"]
+                end
+            end
+                if g[t] then
+                local v = g[t]
+                if v["IsCallback"] == true then
+                    return v["Value"](s)
+                else
+                    return v["Value"]
+                end
+            end
+                if j[s] and j[s][t] then
+                return k[s][t]
+            end
+                return p(s, t)
+            end
+        )
+    o.__newindex =
+        newcclosure(
+            function(w, x, y)
+                if n() then
+                return q(w, x, y)
+            end
+                if e[w] and e[w][x] then
+                local z = e[w][x]
+                if z["Callback"] == nil then
+                    return
+                else
+                    z["Callback"](w, y)
+                    return
+                end
+            end
+                if h[x] then
+                local A = h[x]
+                if A["Callback"] == nil then
+                    return
+                else
+                    A["Callback"](w, y)
+                    return
+                end
+            end
+                if j[w] and j[w][x] then
+                local B = j[w][x]
+                if type(y) ~= B["Type"] then
+                    error("bad argument #3 to '" .. x .. "' (" .. B["Type"] .. " expected, got " .. type(x) .. ")")
+                end
+                k[w][x] = y
+                return
+            end
+                return q(w, x, y)
+            end
+        )
+    local D = game.Players.LocalPlayer.Character.Humanoid
+    local function A(_)
+        local a0 = p(D, _)
+        local a1 = type(a0)
+        if not j[D] then
+            j[D] = {}
+        end
+        if not k[D] then
+            k[D] = {}
+        end
+        j[D][_] = {Type = a1}
+        k[D][_] = p(D, _)
+        local a2 = function()
+            j[D][_] = nil
+            k[D][_] = nil
+        end
+        return {remove = a2, Remove = a2}
+    end
+    A("WalkSpeed")
+    A("JumpPower")
+end
+l()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 22
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+wait()
+while wait() do
+    game.ReplicatedStorage.MainEvent:FireServer("Block", true)
+    wait()
+    for _, v in next, game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks() do
+        if (v.Animation.AnimationId:match("rbxassetid://2788354405")) then
+            v:Stop();
+        end;
+    end;
+end
+wait()
+while wait() do
+    pcall(function()
+        for i, v in pairs(game.Players:GetPlayers()) do
+            if (workspace.Players[game.Players.LocalPlayer.Name].HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude < 1 then
+                game.ReplicatedStorage.MainEvent:FireServer("Block", true)
+            end
+        end
+    end)
+end
+end)
